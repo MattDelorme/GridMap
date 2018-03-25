@@ -1,29 +1,26 @@
-﻿using Shared;
+﻿using System;
+using Shared;
 
 namespace GridMap
 {
-    public struct Map
+    [Serializable]
+    public class Map
     {
         public int[] OneDimensionalMap;
-        public int Rows;
         public int Columns;
-    
-        private int[,] twoDimensionalMap;
+        public int Rows;
 
-        public int[,] TwoDimensionalMap {
-            get {
-                if (twoDimensionalMap == null)
-                {
-                    twoDimensionalMap = new int[Columns, Rows];
-                    for (int i = 0; i < OneDimensionalMap.Length && i < Rows * Columns; i++)
-                    {
-                        int row = i / Columns;
-                        int column = i % Columns;
-                        twoDimensionalMap[column, row] = OneDimensionalMap[i];
-                    }
-                }
-                return twoDimensionalMap;
-            }
+        public int this[int column, int row]
+        {
+            get { return OneDimensionalMap[row * Columns + column]; }
+            set { OneDimensionalMap[row * Columns + column] = value; }
+        }
+
+        public Map(int columns, int rows)
+        {
+            Rows = rows;
+            Columns = columns;
+            OneDimensionalMap = new int[columns * rows];
         }
 
         public bool IsInBounds(int x, int y)

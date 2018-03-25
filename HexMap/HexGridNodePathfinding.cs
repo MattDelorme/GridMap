@@ -13,7 +13,6 @@ namespace GridMap
 
         protected override IEnumerable<HexCoordinates> GetNeighbours(HexCoordinates node)
         {
-            var map = Map.TwoDimensionalMap;
             List<HexCoordinates> neighbours = new List<HexCoordinates>();
     
             List<HexCoordinates> potentialNeighbours = node.GetNeighbours();
@@ -21,7 +20,7 @@ namespace GridMap
             for (int i = 0; i < potentialNeighbours.Count; i++)
             {
                 IntVector2 mapCoordinates = potentialNeighbours[i].ToMapCoordinates();
-                if (Map.IsInBounds(mapCoordinates) && isPassable(mapCoordinates, map))
+                if (Map.IsInBounds(mapCoordinates) && isPassable(mapCoordinates, Map))
                 {
                     neighbours.Add(potentialNeighbours[i]);
                 }
@@ -32,7 +31,7 @@ namespace GridMap
         protected override int GetCost(HexCoordinates currentNode, HexCoordinates neighbourNode)
         {
             IntVector2 mapCoordinates = neighbourNode.ToMapCoordinates();
-            return Map.TwoDimensionalMap[mapCoordinates.X, mapCoordinates.Y];
+            return Map[mapCoordinates.X, mapCoordinates.Y];
         }
 
         protected override int HeuristicCostEstimate(HexCoordinates startNode, HexCoordinates goalNode)
@@ -40,7 +39,7 @@ namespace GridMap
             return startNode.DistanceTo(goalNode);
         }
 
-        private static bool isPassable(IntVector2 mapCoordinates, int[,] map)
+        private static bool isPassable(IntVector2 mapCoordinates, Map map)
         {
             return map[mapCoordinates.X, mapCoordinates.Y] > 0;
         }
