@@ -9,29 +9,13 @@ namespace GridMap
 
         private readonly IntVector2 coordinates;
 
-        public int X
-        {
-            get
-            {
-                return coordinates.X;
-            }
-        }
+        public int X { get { return coordinates.X; } }
 
-        public int Z
-        {
-            get
-            {
-                return coordinates.Y;
-            }
-        }
+        public int Z { get { return coordinates.Y; } }
 
-        public int Y
-        {
-            get
-            {
-                return -X - Z;
-            }
-        }
+        public int Y { get { return -X - Z; } }
+
+        public IntVector2 MapCoordinates { get { return new IntVector2(-(-X - Z / 2), Z); } }
 
         public HexCoordinates(int x, int z)
         {
@@ -115,11 +99,6 @@ namespace GridMap
         public static HexCoordinates FromMapCoordinates(IntVector2 coordinates)
         {
             return new HexCoordinates(coordinates.X - coordinates.Y / 2, coordinates.Y);
-        }
-
-        public IntVector2 ToMapCoordinates()
-        {
-            return new IntVector2(-(-X - Z / 2), Z);
         }
 
         public int DistanceTo(HexCoordinates target)

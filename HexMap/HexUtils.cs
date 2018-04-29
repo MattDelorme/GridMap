@@ -17,7 +17,7 @@ namespace GridMap
 
         public static Vector3 GetHorizontalPosition(HexCoordinates hexCoordinates, float outerRadius)
         {
-            return GetHorizontalPosition(hexCoordinates.ToMapCoordinates(), outerRadius);
+            return GetHorizontalPosition(hexCoordinates.MapCoordinates, outerRadius);
         }
 
         public static Vector3 GetHorizontalPosition(IntVector2 coordinates, float outerRadius)
@@ -37,7 +37,7 @@ namespace GridMap
 
         public static Vector3 GetVerticalPosition(HexCoordinates hexCoordinates, float outerRadius)
         {
-            return GetVerticalPosition(hexCoordinates.ToMapCoordinates(), outerRadius);
+            return GetVerticalPosition(hexCoordinates.MapCoordinates, outerRadius);
         }
 
         public static Vector3 GetVerticalPosition(IntVector2 coordinates, float outerRadius)
