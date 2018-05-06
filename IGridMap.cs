@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Shared;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace GridMap
         int GetCost(IntVector2 fromCoordinates, IntVector2 toCoordinates);
         bool IsInBounds(IntVector2 coordinates);
         bool IsPassable(IntVector2 coordinates);
+        List<IntVector2> FindPath(IntVector2 startCoordinates, IntVector2 destinationCoordinates);
         int GetTotalCost(IntVector2 startCoordinates, IntVector2 destinationCoordinates);
+        int GetTotalCostOfPath(List<IntVector2> path);
     }
 }

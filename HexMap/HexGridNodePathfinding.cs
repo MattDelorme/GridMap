@@ -15,12 +15,17 @@ namespace GridMap
             this.gridMap = gridMap;
         }
 
+        public List<HexCoordinates> FindPath(IntVector2 startNode, IntVector2 goalNode)
+        {
+            return FindPath(HexCoordinates.FromMapCoordinates(startNode), HexCoordinates.FromMapCoordinates(goalNode));
+        }
+
         protected override IEnumerable<HexCoordinates> GetNeighbours(HexCoordinates node)
         {
             List<HexCoordinates> neighbours = new List<HexCoordinates>();
-    
+
             List<HexCoordinates> potentialNeighbours = node.GetNeighbours();
-    
+
             for (int i = 0; i < potentialNeighbours.Count; i++)
             {
                 IntVector2 mapCoordinates = potentialNeighbours[i].MapCoordinates;

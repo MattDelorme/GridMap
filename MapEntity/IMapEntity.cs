@@ -1,15 +1,16 @@
-﻿using Shared;
+﻿using System;
+using System.Collections.Generic;
+using Shared;
 
 namespace GridMap
 {
-    public interface IMapEntity
+    public interface IMapEntity : IEntity
     {
-        IGridMap GridMap { get; set; }
-        float Scale { set; }
-        IntVector2 Coordinates { get; }
+        event Action<IntVector2> CoordinatesSet;
 
-        void SetLocation(IntVector2 coordinates);
-        void MoveTo(IntVector2 coordinates);
+        float Scale { set; }
+        IGridMap GridMap { get; set; }
+        IntVector2 Coordinates { get; set; }
+        List<IntVector2> MovementPath { get; set; }
     }
 }
-

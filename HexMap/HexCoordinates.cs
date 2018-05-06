@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using Shared;
+using UnityEngine;
+using System;
 
 namespace GridMap
 {
+    public enum HexDirection { W, NW, NE, E, SE, SW }
+
     public struct HexCoordinates
     {
-        public enum Direction { W, NW, NE, E, SE, SW }
-
         private readonly IntVector2 coordinates;
 
         public int X { get { return coordinates.X; } }
@@ -37,19 +39,19 @@ namespace GridMap
             return new HexCoordinates(X, Z + z);
         }
 
-        public HexCoordinates Add(int value, Direction direction)
+        public HexCoordinates Add(int value, HexDirection direction)
         {
             switch (direction)
             {
-                case Direction.W:
+                case HexDirection.W:
                     return AddX(-1 * value);
-                case Direction.NW:
+                case HexDirection.NW:
                     return AddY(value);
-                case Direction.NE:
+                case HexDirection.NE:
                     return AddZ(value);
-                case Direction.E:
+                case HexDirection.E:
                     return AddX(value);
-                case Direction.SE:
+                case HexDirection.SE:
                     return AddY(-1 *value);
                 default:
                     return AddZ(-1 * value);
@@ -61,7 +63,7 @@ namespace GridMap
             var neighbours = new List<HexCoordinates>();
             for (int i = 0; i < 6; i++)
             {
-                neighbours.Add(Add(1, (Direction)i));
+                neighbours.Add(Add(1, (HexDirection)i));
             }
             return neighbours;
         }
@@ -107,6 +109,69 @@ namespace GridMap
                     (Y < target.Y ? target.Y - Y : Y - target.Y) +
                     (Z < target.Z ? target.Z - Z : Z - target.Z)) / 2;
         }
+
+        public static Vector3 Lerp(HexCoordinates a, HexCoordinates b, float t)
+        {
+            return Vector3.Lerp(new Vector3(a.X, a.Y, a.Z), new Vector3(b.X, b.Y, b.Z), t);
+        }
+
+        public static HexCoordinates Round(Vector3 floatHexCoordinates)
+        {
+            int x = (int)Mathf.Round(floatHexCoordinates.x);
+            int y = (int)Mathf.Round(floatHexCoordinates.y);
+            int z = (int)Mathf.Round(floatHexCoordinates.z);
+
+            float xDelta = Mathf.Abs((float)x - floatHexCoordinates.x);
+            float yDelta = Mathf.Abs((float)y - floatHexCoordinates.y);
+            float zDelta = Mathf.Abs((float)z - floatHexCoordinates.z);
+
+            if (xDelta > yDelta && xDelta > zDelta)
+            {
+                x = -y - z;
+            }
+            else if (yDelta > zDelta)
+            {
+                y = -x - z;
+            }
+            else
+            {
+                z = -z - y;
+            }
+
+            return new HexCoordinates(x, z);
+        }
+
+        public static List<HexCoordinates> GetLine(HexCoordinates start, HexCoordinates end)
+        {
+            int distance = start.DistanceTo(end);
+            List<HexCoordinates> results = new List<HexCoordinates>();
+            for (int i = 0; i < distance; i++)
+            {
+
+            }
+
+            return results;
+        }
+
+/*
+        function cube_round(cube):
+        var rx = round(cube.x)
+            var ry = round(cube.y)
+            var rz = round(cube.z)
+
+            var x_diff = abs(rx - cube.x)
+            var y_diff = abs(ry - cube.y)
+            var z_diff = abs(rz - cube.z)
+
+            if x_diff > y_diff and x_diff > z_diff:
+                rx = -ry-rz
+            else if y_diff > z_diff:
+                ry = -rx-rz
+            else:
+                rz = -rx-ry
+
+                return Cube(rx, ry, rz)
+*/
 
         public override bool Equals(object obj)
         {

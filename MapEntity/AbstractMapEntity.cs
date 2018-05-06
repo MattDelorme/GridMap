@@ -1,12 +1,14 @@
-﻿using Shared;
+﻿using System;
+using System.Collections.Generic;
+using Shared;
 using UnityEngine;
 
 namespace GridMap
 {
     public abstract class AbstractMapEntity : MonoBehaviour, IMapEntity
     {
-        public IntVector2 Coordinates { get; protected set; }
-        public IGridMap GridMap { get; set; }
+        public event Action<IntVector2> CoordinatesSet;
+        public event Action<List<IntVector2>> MovementPathSet;
 
         private float scale;
         public float Scale
@@ -22,13 +24,39 @@ namespace GridMap
             }
         }
 
-        public void SetLocation(IntVector2 coordinates)
+        public IGridMap GridMap { get; set; }
+
+        private IntVector2 coordinates;
+        public IntVector2 Coordinates
         {
-            Coordinates = coordinates;
-            transform.position = GridMap.GetPosition(coordinates);
+            get
+            {
+                return coordinates;
+            }
+            set
+            {
+                coordinates = value;
+                CoordinatesSet.Dispatch(coordinates);
+            }
         }
 
-        public abstract void MoveTo(IntVector2 coordinates);
+        private List<IntVector2> movementPath;
+        public List<IntVector2> MovementPath
+        {
+            get
+            {
+                return movementPath;
+            }
+            set
+            {
+                movementPath = value;
+                MovementPathSet.Dispatch(movementPath);
+            }
+        }
+
+        public T Get<T>()
+        {
+            return GetComponent<T>();
+        }
     }
 }
-
