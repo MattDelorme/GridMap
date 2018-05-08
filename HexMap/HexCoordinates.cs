@@ -135,7 +135,7 @@ namespace GridMap
             }
             else
             {
-                z = -z - y;
+                z = -x - y;
             }
 
             return new HexCoordinates(x, z);
@@ -145,33 +145,14 @@ namespace GridMap
         {
             int distance = start.DistanceTo(end);
             List<HexCoordinates> results = new List<HexCoordinates>();
-            for (int i = 0; i < distance; i++)
+            for (int i = 1; i <= distance; i++)
             {
-
+                var floatHexCoordinates = Lerp(start, end, (float)1 / (float)distance * (float)i);
+                results.Add(Round(floatHexCoordinates));
             }
 
             return results;
         }
-
-/*
-        function cube_round(cube):
-        var rx = round(cube.x)
-            var ry = round(cube.y)
-            var rz = round(cube.z)
-
-            var x_diff = abs(rx - cube.x)
-            var y_diff = abs(ry - cube.y)
-            var z_diff = abs(rz - cube.z)
-
-            if x_diff > y_diff and x_diff > z_diff:
-                rx = -ry-rz
-            else if y_diff > z_diff:
-                ry = -rx-rz
-            else:
-                rz = -rx-ry
-
-                return Cube(rx, ry, rz)
-*/
 
         public override bool Equals(object obj)
         {
