@@ -4,10 +4,24 @@ using Shared;
 
 namespace GridMap
 {
+    public struct MapTeamAndEntity
+    {
+        public readonly IMapEntityTeam MapEntityTeam;
+        public readonly IMapEntity MapEntity;
+
+        public MapTeamAndEntity(IMapEntityTeam mapEntityTeam, IMapEntity mapEntity)
+        {
+            MapEntity = mapEntity;
+            MapEntityTeam = mapEntityTeam;
+            
+        }
+    }
+
     public interface IMapEntityTeam
     {
         event Action<IMapEntityTeam, IMapEntity> OnMemberSelected;
         event Action OnMemberDeselected;
+        EventStack<MapTeamAndEntity> OnMemberInteracted { get; }
 
         int Allegiances { get; }
 
@@ -18,5 +32,6 @@ namespace GridMap
 
         void Select(IMapEntity member);
         void Deselect();
+        void Interact(IMapEntity member);
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
-using Shared;
+﻿using Shared;
 
 namespace GridMap
 {
     public interface ILineOfSightManager
     {
-        bool HasLineOfSight(IMapEntity observer, IntVector2 targetCoordinates);
+        bool HasLineOfSight(IntVector2 observerCoordinates, IntVector2 targetCoordinates);
+        bool BlocksLineOfSight(IntVector2 coordinates);
     }
 }

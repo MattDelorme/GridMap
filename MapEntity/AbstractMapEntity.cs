@@ -54,7 +54,7 @@ namespace GridMap
             }
         }
 
-        public T Get<T>()
+        public T Get<T>() where T : IEntity
         {
             return GetComponent<T>();
         }

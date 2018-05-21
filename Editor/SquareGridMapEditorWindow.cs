@@ -13,7 +13,7 @@ namespace GridMap
 
         private int current;
 
-        [MenuItem("Windows/Grid Map")]
+        [MenuItem("Window/Grid Map")]
         public static void OpenWindow()
         {
             EditorWindow.GetWindow<SquareGridMapEditorWindow>();
@@ -44,7 +44,8 @@ namespace GridMap
 
             if (GUILayout.Button("Save", GUILayout.MaxWidth(60)))
             {
-                string filePath = EditorUtility.SaveFilePanel("Save", Directory.GetCurrentDirectory(), null, "json");
+                string directory = mapAsset != null ? AssetDatabase.GetAssetPath(mapAsset) : Directory.GetCurrentDirectory();
+                string filePath = EditorUtility.SaveFilePanel("Save", directory, null, "json");
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     string jsonData = JsonUtility.ToJson(map);
