@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shared;
-using Shared.Unity.Math;
 using UnityEngine;
 
 namespace GridMap
@@ -68,57 +66,5 @@ namespace GridMap
                 new Vector3(0f, 0f, outerRadius)
             };
         }
-
-//        public static List<HexCoordinates> GetLine(HexCoordinates start, HexCoordinates end)
-//        {
-//            var lineList = new List<HexCoordinates>();
-//            lineList.Add(start);
-//
-//            Vector3 startPosition = GetVerticalPosition(start, 1);
-//            Vector3 endPosition = GetVerticalPosition(end, 1);
-//            if (Mathf.Approximately(startPosition.x, endPosition.x))
-//            {
-//                // Avoiding NaN slope
-//                endPosition.x += 0.0001f;
-//            }
-//            Line line = new Line(startPosition, endPosition);
-//
-//            List<HexCoordinates> neighbours;
-//            var visited = new HashSet<HexCoordinates>();
-//            float smallestDelta;
-//            float currentDistance;
-//
-//            HexCoordinates current = start;
-//            HexCoordinates closestNeighbour = default(HexCoordinates);
-//            int test = 0;
-//            while (current != end && test < 50)
-//            {
-//                test++;
-//                currentDistance = Vector3.Distance(GetVerticalPosition(current, 1), endPosition);
-//                neighbours = current.GetNeighbours();
-//                smallestDelta = float.MaxValue;
-//                for (int i = 0; i < neighbours.Count; i++)
-//                {
-//                    if (!visited.Contains(neighbours[i]))
-//                    {
-//                        Vector3 position = GetVerticalPosition(neighbours[i], 1);
-//
-//                        float delta = LineUtils.GetDistanceFromLine(position, line);
-//                        float distance = Vector3.Distance(position, endPosition);
-//                        if (distance < currentDistance && delta < smallestDelta)
-//                        {
-//                            smallestDelta = delta;
-//                            closestNeighbour = neighbours[i];
-//                        }
-//                        visited.Add(neighbours[i]);
-//                    }
-//                }
-//
-//                current = closestNeighbour;
-//                lineList.Add(closestNeighbour);
-//            }
-//
-//            return lineList;
-//        }
     }
 }

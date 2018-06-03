@@ -6,8 +6,8 @@ namespace GridMap
 {
     public interface IGridMap
     {
-        EventStack<IntVector2> CellHighlighted { get; }
-        EventStack<IntVector2> CellSelected { get; }
+        PriorityEvent<IntVector2> CellHighlighted { get; }
+        PriorityEvent<IntVector2> CellSelected { get; }
 
         void CreateMap(Map map);
         Vector3 GetPosition(IntVector2 coordinates);

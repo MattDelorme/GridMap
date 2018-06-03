@@ -13,7 +13,6 @@ namespace GridMap
         {
             MapEntity = mapEntity;
             MapEntityTeam = mapEntityTeam;
-            
         }
     }
 
@@ -21,7 +20,7 @@ namespace GridMap
     {
         event Action<IMapEntityTeam, IMapEntity> OnMemberSelected;
         event Action OnMemberDeselected;
-        EventStack<MapTeamAndEntity> OnMemberInteracted { get; }
+        PriorityEvent<MapTeamAndEntity> OnMemberInteracted { get; }
 
         int Allegiances { get; }
 
