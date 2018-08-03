@@ -11,6 +11,11 @@ namespace GridMap
         private int columns;
         private int rows;
 
+        private string[] tabsText = new string[] { "Fields", "Buttons" };
+        private int selectedTabIndex;
+
+        private Vector2 scrollPosition;
+
         private int current;
 
         [MenuItem("Window/Grid Map")]
@@ -32,6 +37,10 @@ namespace GridMap
             if (GUILayout.Button("Create", GUILayout.MaxWidth(60)))
             {
                 map = new Map(columns, rows);
+                for (int i = 0; i < map.OneDimensionalMap.Length; i++)
+                {
+                    map.OneDimensionalMap[i] = 1;
+                }
             }
 
             if (GUILayout.Button("Load", GUILayout.MaxWidth(60)))
@@ -56,30 +65,33 @@ namespace GridMap
 
             EditorGUILayout.EndHorizontal();
 
+            selectedTabIndex = GUILayout.Toolbar(selectedTabIndex, tabsText);
+
             if (map != null)
             {
-                for (int i = 0; i < map.Rows; i++)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    for (int j = 0; j < map.Columns; j++)
-                    {
-                        map[j, i] = EditorGUILayout.IntField(map[j, i], GUILayout.MaxWidth(20));
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
                 for (int i = 0; i < map.Rows; i++)
                 {
                     EditorGUILayout.BeginHorizontal();
                     for (int j = 0; j < map.Columns; j++)
                     {
-                        if (GUILayout.Button(map[j, i].ToString(), GUILayout.MaxWidth(20)))
+                        switch (selectedTabIndex)
                         {
-                            map[j, i] = current;
+                            case 0:
+                                map[j, i] = EditorGUILayout.IntField(map[j, i], GUILayout.MaxWidth(20));
+                                break;
+                            case 1:
+                                if (GUILayout.Button(map[j, i].ToString(), GUILayout.MaxWidth(20)))
+                                {
+                                    map[j, i] = current;
+                                }
+                                break;
                         }
                     }
                     EditorGUILayout.EndHorizontal();
                 }
+                EditorGUILayout.EndScrollView();
             }
         }
     }
