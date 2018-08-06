@@ -11,14 +11,16 @@ namespace GridMap
         private int columns;
         private int rows;
 
-        private string[] tabsText = new string[] { "Fields", "Buttons" };
+        private readonly string[] tabsText = new string[] { "Fields", "Buttons" };
         private int selectedTabIndex;
+
+        private string filePath;
 
         private Vector2 scrollPosition;
 
         private int current;
 
-        [MenuItem("Window/Grid Map")]
+        [MenuItem("Window/GridMap/Edit Grid Map")]
         public static void OpenWindow()
         {
             EditorWindow.GetWindow<SquareGridMapEditorWindow>();
@@ -51,16 +53,21 @@ namespace GridMap
                 }
             }
 
-            if (GUILayout.Button("Save", GUILayout.MaxWidth(60)))
+            if (GUILayout.Button("Save As", GUILayout.MaxWidth(60)))
             {
                 string directory = mapAsset != null ? AssetDatabase.GetAssetPath(mapAsset) : Directory.GetCurrentDirectory();
-                string filePath = EditorUtility.SaveFilePanel("Save", directory, null, "json");
-                if (!string.IsNullOrEmpty(filePath))
+                filePath = EditorUtility.SaveFilePanel("Save", directory, null, "json");
+                save(filePath, map);
+            }
+
+            if (GUILayout.Button("Save", GUILayout.MaxWidth(60)))
+            {
+                if (string.IsNullOrEmpty(filePath))
                 {
-                    string jsonData = JsonUtility.ToJson(map);
-                    File.WriteAllText(filePath, jsonData);
-                    AssetDatabase.Refresh();
+                    string directory = mapAsset != null ? AssetDatabase.GetAssetPath(mapAsset) : Directory.GetCurrentDirectory();
+                    filePath = EditorUtility.SaveFilePanel("Save", directory, null, "json");
                 }
+                save(filePath, map);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -71,11 +78,22 @@ namespace GridMap
             {
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-                for (int i = 0; i < map.Rows; i++)
+                for (int i = map.Rows - 1; i >= 0; i--)
                 {
                     EditorGUILayout.BeginHorizontal();
                     for (int j = 0; j < map.Columns; j++)
                     {
+                        var previousBackgroundColor = GUI.backgroundColor;
+
+                        switch (map[j, i])
+                        {
+                            case 0:
+                                GUI.backgroundColor = Color.black;
+                                break;
+                            case 4:
+                                GUI.backgroundColor = Color.blue;
+                                break;
+                        }
                         switch (selectedTabIndex)
                         {
                             case 0:
@@ -88,10 +106,21 @@ namespace GridMap
                                 }
                                 break;
                         }
+                        GUI.backgroundColor = previousBackgroundColor;
                     }
                     EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.EndScrollView();
+            }
+        }
+
+        private static void save(string filePath, Map map)
+        {
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                string jsonData = JsonUtility.ToJson(map);
+                File.WriteAllText(filePath, jsonData);
+                AssetDatabase.Refresh();
             }
         }
     }
